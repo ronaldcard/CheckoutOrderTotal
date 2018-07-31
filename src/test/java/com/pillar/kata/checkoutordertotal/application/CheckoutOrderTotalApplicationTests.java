@@ -1,4 +1,4 @@
-package com.pillar.kata.CheckoutOrderTotal;
+package com.pillar.kata.checkoutordertotal.application;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
