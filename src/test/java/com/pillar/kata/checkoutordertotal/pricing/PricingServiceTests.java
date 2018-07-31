@@ -41,15 +41,26 @@ public class PricingServiceTests {
 	@Test
 	public void setBasePriceOfItem_Test() {
 		
-		final Item item = new Item("can of soup");
-		final Price priceToSet = new Price(new BigDecimal("1.89"), Unit.EACH);
+		final Item canOfSoup = new Item("can of soup");
+		final Price canOfSoupPrice = new Price(new BigDecimal("1.89"), Unit.EACH);
 		
-		this.service.setBasePriceOfItem(item, priceToSet);
+		final Item groundBeef = new Item("80% lean ground beef");
+		final Price groundBeefPrice = new Price(new BigDecimal("5.99"), Unit.POUND);
 		
-		final Price priceOfItemInInventory = this.service.getBasePriceOfItem(new Item("can of soup"));
+		this.service.setBasePriceOfItem(canOfSoup, canOfSoupPrice);
+		this.service.setBasePriceOfItem(groundBeef, groundBeefPrice);
 		
-		assertNotNull(priceOfItemInInventory);
-		assertEquals(new BigDecimal("1.89"), priceOfItemInInventory.getAmount());
-		assertEquals(Unit.EACH, priceOfItemInInventory.getUnit());
+		final Price canOfSoupInInventory = this.service.getBasePriceOfItem(new Item("can of soup"));
+		final Price goundBeefInInventory = this.service.getBasePriceOfItem(new Item("80% lean ground beef"));
+		
+		// canOfSoup
+		assertNotNull(canOfSoupInInventory);
+		assertEquals(new BigDecimal("1.89"), canOfSoupInInventory.getAmount());
+		assertEquals(Unit.EACH, canOfSoupInInventory.getUnit());
+		
+		// groundBeef
+		assertNotNull(goundBeefInInventory);
+		assertEquals(new BigDecimal("5.99"), goundBeefInInventory.getAmount());
+		assertEquals(Unit.POUND, goundBeefInInventory.getUnit());
 	}
 }
