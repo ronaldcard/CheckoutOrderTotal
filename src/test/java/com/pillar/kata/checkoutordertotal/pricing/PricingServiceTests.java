@@ -73,4 +73,38 @@ public class PricingServiceTests {
 		assertEquals(new BigDecimal("2.38"), configuredBananasPrice.getAmount());
 		assertEquals(Unit.POUND, configuredBananasPrice.getUnit());
 	}
+	
+	/**
+	 * Tests being able to 
+	 */
+	@Test
+	public void configureMarkdowns_Test() {
+		
+		final Price canOfSoupMarkdown = new Price(new BigDecimal("0.20"), Unit.EACH);
+		final Price groundBeefMarkdown = new Price(new BigDecimal("0.50"), Unit.POUND);
+		final Price bananasMarkdown = new Price(new BigDecimal("0.15"), Unit.POUND);
+		
+		this.service.setItemMarkdown(this.canOfSoup, canOfSoupMarkdown);
+		this.service.setItemMarkdown(this.groundBeef, groundBeefMarkdown);
+		this.service.setItemMarkdown(this.bananas, bananasMarkdown);
+		
+		final Price configuredCanOfSoupMarkdown = this.service.getItemMarkdown(new Item("can of soup"));
+		final Price configuredGroundBeefMarkdown = this.service.getItemMarkdown(new Item("80% lean ground beef"));
+		final Price configuredBananasMarkdown = this.service.getItemMarkdown(new Item("bananas"));
+		
+		// canOfSoup
+		assertNotNull(configuredCanOfSoupMarkdown);
+		assertEquals(new BigDecimal("0.20"), configuredCanOfSoupMarkdown.getAmount());
+		assertEquals(Unit.EACH, configuredCanOfSoupMarkdown.getUnit());
+		
+		// groundBeef
+		assertNotNull(configuredGroundBeefMarkdown);
+		assertEquals(new BigDecimal("0.50"), configuredGroundBeefMarkdown.getAmount());
+		assertEquals(Unit.POUND, configuredGroundBeefMarkdown.getUnit());
+		
+		// bananas
+		assertNotNull(configuredBananasMarkdown);
+		assertEquals(new BigDecimal("0.15"), configuredBananasMarkdown.getAmount());
+		assertEquals(Unit.POUND, configuredBananasMarkdown.getUnit());
+	}
 }

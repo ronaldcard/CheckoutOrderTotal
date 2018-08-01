@@ -19,6 +19,7 @@ import com.pillar.kata.checkoutordertotal.item.Price;
 public class PricingService {
 	
 	private Map<Item, Price> basePrices;
+	private Map<Item, Price> markdownPrices;
 	
 	/**
 	 * Initializes the item prices.
@@ -27,7 +28,7 @@ public class PricingService {
 	public void initializeItemPrices() {
 		
 		this.basePrices = new HashMap<>();
-		
+		this.markdownPrices = new HashMap<>();
 		// potentially load from repository, if we plan to persist the inventory
 	}
 	
@@ -47,10 +48,10 @@ public class PricingService {
 	}
 	
 	/**
-	 * Sets the base price of an {@link Item}.
+	 * Sets the base {@link Price} of an {@link Item}.
 	 * 
-	 * @param item the item
-	 * @param price the price
+	 * @param item the item to set
+	 * @param price the price to set
 	 */
 	public void setBasePriceOfItem(final Item item, final Price price) {
 		
@@ -59,6 +60,36 @@ public class PricingService {
 		}
 		
 		this.basePrices.put(item, price);
+	}
+	
+	/**
+	 * Gets the markdown {@link Price} of an {@link Item} in the inventory.
+	 * 
+	 * @param item the item
+	 * @return the markdown price
+	 */
+	public Price getItemMarkdown(final Item item) {
+		
+		if (this.markdownPrices.containsKey(item)) {
+			return this.markdownPrices.get(item);
+		}
+		
+		throw new PricingServiceException("No markdown price is configured for [" + item.getDescription() + "]");
+	}
+	
+	/**
+	 * Sets the markdown {@link Price} of an {@link Item}.
+	 * 
+	 * @param item the item to set
+	 * @param price the price to set
+	 */
+	public void setItemMarkdown(final Item item, final Price price) { 
+		
+		if (item == null || price == null) {
+			return;
+		}
+		
+		this.markdownPrices.put(item, price);
 	}
 
 	/**
@@ -77,5 +108,23 @@ public class PricingService {
 	 */
 	public void setBasePrices(final Map<Item, Price> basePrices) {
 		this.basePrices = basePrices;
+	}
+
+	/**
+	 * Simple Getter.
+	 * 
+	 * @return the markdownPrices
+	 */
+	public Map<Item, Price> getMarkdownPrices() {
+		return markdownPrices;
+	}
+
+	/**
+	 * Simple Setter.
+	 * 
+	 * @param markdownPrices the markdownPrices to set
+	 */
+	public void setMarkdownPrices(Map<Item, Price> markdownPrices) {
+		this.markdownPrices = markdownPrices;
 	}
 }
