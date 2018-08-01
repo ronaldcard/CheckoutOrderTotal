@@ -3,8 +3,6 @@ package com.pillar.kata.checkoutordertotal.shoppingcart;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -21,12 +19,12 @@ public class ShoppingCart {
 	// item | count
 	private Map<Item, Integer> items;
 	
-	@PostConstruct
-	public void initializeItems() {
+	/**
+	 * Empty Constructor.
+	 */
+	public ShoppingCart() {
 		
 		this.items = new HashMap<>();
-		
-		// potentially from either repository or client's localStorage?
 	}
 
 	/**
@@ -70,4 +68,32 @@ public class ShoppingCart {
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
+	
+	/**
+	 * Add's an {@link Item} to the shopping cart.
+	 * 
+	 * @param item the item
+	 */
+	public void addItem(final Item item, final int addCount) {
+		
+		if (this.items.containsKey(item)) {
+			final Integer currentCount = this.items.get(item);
+			System.out.println("[" + currentCount + "][" + addCount + "]");
+			this.items.put(item, (currentCount + addCount));
+		} else {
+			System.out.println("adding [" + addCount + "]");
+			this.items.put(item, addCount);
+		}
+	}
+	
+	/**
+	 * Gets the number of the type of {@link Item} in the shopping cart.
+	 * 
+	 * @param item the item
+	 * @return the count
+	 */
+	public int getItemCount(final Item item) {
+		
+		return this.items.containsKey(item) ? this.items.get(item) : 0;
+	}
 }
