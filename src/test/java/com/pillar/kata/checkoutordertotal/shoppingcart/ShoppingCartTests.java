@@ -51,6 +51,9 @@ public class ShoppingCartTests {
 		assertEquals(3, currentPurchaseAmount.getAmount(), 0);
 	}
 	
+	/**
+	 * Tests adding multiple type of items to the shopping cart.
+	 */
 	@Test
 	public void addMultipleItem_Test() {
 		
