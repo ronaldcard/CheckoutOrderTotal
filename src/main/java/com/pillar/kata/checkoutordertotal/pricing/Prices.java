@@ -17,7 +17,7 @@ import com.pillar.kata.checkoutordertotal.pricing.special.WeeklySpecial;
  * @author tony.card
  */
 @Service
-public class PricingService {
+public class Prices {
 	
 	private Map<Item, Price> basePrices;
 	private Map<Item, Price> markdownPrices;

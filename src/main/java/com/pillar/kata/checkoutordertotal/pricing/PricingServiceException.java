@@ -1,7 +1,7 @@
 package com.pillar.kata.checkoutordertotal.pricing;
 
 /**
- * Custom {@link PricingService} {@link RuntimeException}.
+ * Custom {@link Prices} {@link RuntimeException}.
  * 
  * @author tony.card
  */

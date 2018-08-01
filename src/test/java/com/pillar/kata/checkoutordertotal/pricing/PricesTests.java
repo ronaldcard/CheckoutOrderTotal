@@ -19,16 +19,16 @@ import com.pillar.kata.checkoutordertotal.pricing.special.NforXDollars;
 import com.pillar.kata.checkoutordertotal.pricing.special.WeeklySpecial;
 
 /**
- * Tests for the {@link PricingService}.
+ * Tests for the {@link Prices}.
  * 
  * @author PatientZero
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PricingService.class})
-public class PricingServiceTests {
+@SpringBootTest(classes = {Prices.class})
+public class PricesTests {
 	
 	@Autowired
-	private PricingService service;
+	private Prices service;
 	
 	// common test items
 	private Item canOfSoup = new Item("can of soup");
@@ -36,7 +36,7 @@ public class PricingServiceTests {
 	private Item bananas = new Item("bananas");
 	
 	/**
-	 * Tests that the {@link PricingService} was injected properly.
+	 * Tests that the {@link Prices} was injected properly.
 	 */
 	@Test
 	public void injectionOfPricingService_Test() {
