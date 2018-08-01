@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.pillar.kata.checkoutordertotal.item.Item;
+import com.pillar.kata.checkoutordertotal.item.Unit;
 
 /**
  * Tests for the ShoppingCart.
@@ -38,13 +39,15 @@ public class ShoppingCartTests {
 	 * Tests adding an item to the shopping cart.
 	 */
 	@Test
-	public void addItem_Test() {
+	public void addOneItem_Test() {
 		
 		final Item canOfSoup = new Item("can of soup");
 		
-		this.shoppingCart.addItem(canOfSoup, 2);
-		this.shoppingCart.addItem(canOfSoup, 1);
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(2, Unit.EACH));
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(1, Unit.EACH));
 		
-		assertEquals(3, this.shoppingCart.getItemCount(new Item("can of soup")));
+		final PurchaseAmount currentPurchaseAmount = this.shoppingCart.getItemCount(new Item("can of soup"));
+		
+		assertEquals(3, currentPurchaseAmount.getAmount(), 0.0f);
 	}
 }

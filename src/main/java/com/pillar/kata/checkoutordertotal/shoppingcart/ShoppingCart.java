@@ -17,7 +17,7 @@ import com.pillar.kata.checkoutordertotal.item.Item;
 public class ShoppingCart {
 	
 	// item | count
-	private Map<Item, Integer> items;
+	private Map<Item, PurchaseAmount> items;
 	
 	/**
 	 * Empty Constructor.
@@ -26,13 +26,46 @@ public class ShoppingCart {
 		
 		this.items = new HashMap<>();
 	}
+	
+	/**
+	 * Add's an {@link Item} to the shopping cart.
+	 * 
+	 * @param item the item
+	 */
+	public void addItem(final Item item, final PurchaseAmount addPurchaseAmount) {
+		
+		if (item == null || addPurchaseAmount == null) {
+			return;
+		}
+		
+		if (this.items.containsKey(item)) {
+			final PurchaseAmount purchaseAmount = this.items.get(item);
+			final float currentCount = purchaseAmount.getAmount();
+						
+			purchaseAmount.setAmount(currentCount + addPurchaseAmount.getAmount());
+		} else {
+			
+			this.items.put(item, addPurchaseAmount);
+		}
+	}
+	
+	/**
+	 * Gets the number of the type of {@link Item} in the shopping cart.
+	 * 
+	 * @param item the item
+	 * @return the count
+	 */
+	public PurchaseAmount getItemCount(final Item item) {
+		
+		return this.items.get(item);
+	}
 
 	/**
 	 * Simple Getter.
 	 * 
 	 * @return the items
 	 */
-	public Map<Item, Integer> getItems() {
+	public Map<Item, PurchaseAmount> getItems() {
 		return this.items;
 	}
 
@@ -41,7 +74,7 @@ public class ShoppingCart {
 	 * 
 	 * @param items the items to set
 	 */
-	public void setItems(final Map<Item, Integer> items) {
+	public void setItems(final Map<Item, PurchaseAmount> items) {
 		this.items = items;
 	}
 	
@@ -68,32 +101,4 @@ public class ShoppingCart {
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
-	
-	/**
-	 * Add's an {@link Item} to the shopping cart.
-	 * 
-	 * @param item the item
-	 */
-	public void addItem(final Item item, final int addCount) {
-		
-		if (this.items.containsKey(item)) {
-			final Integer currentCount = this.items.get(item);
-			System.out.println("[" + currentCount + "][" + addCount + "]");
-			this.items.put(item, (currentCount + addCount));
-		} else {
-			System.out.println("adding [" + addCount + "]");
-			this.items.put(item, addCount);
-		}
-	}
-	
-	/**
-	 * Gets the number of the type of {@link Item} in the shopping cart.
-	 * 
-	 * @param item the item
-	 * @return the count
-	 */
-	public int getItemCount(final Item item) {
-		
-		return this.items.containsKey(item) ? this.items.get(item) : 0;
-	}
 }
