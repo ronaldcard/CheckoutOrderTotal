@@ -1,5 +1,6 @@
 package com.pillar.kata.checkoutordertotal.shoppingcart;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,9 +41,9 @@ public class ShoppingCart {
 		
 		if (this.items.containsKey(item)) {
 			final PurchaseAmount purchaseAmount = this.items.get(item);
-			final Double currentCount = purchaseAmount.getAmount();
+			final BigDecimal currentCount = purchaseAmount.getAmount();
 						
-			purchaseAmount.setAmount(currentCount + addPurchaseAmount.getAmount());
+			purchaseAmount.setAmount(currentCount.add(addPurchaseAmount.getAmount()));
 		} else {
 			
 			this.items.put(item, addPurchaseAmount);

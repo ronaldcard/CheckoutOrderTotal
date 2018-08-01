@@ -1,5 +1,7 @@
 package com.pillar.kata.checkoutordertotal.shoppingcart;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -13,7 +15,7 @@ import com.pillar.kata.checkoutordertotal.item.Unit;
  */
 public class PurchaseAmount {
 	
-	private Double amount;
+	private BigDecimal amount;
 	private Unit unit;
 	
 	/**
@@ -22,7 +24,7 @@ public class PurchaseAmount {
 	 * @param amount the amount
 	 * @param unit the unit
 	 */
-	public PurchaseAmount(final Double amount, final Unit unit) {
+	public PurchaseAmount(final BigDecimal amount, final Unit unit) {
 		this.amount = amount;
 		this.unit = unit;
 	}
@@ -32,7 +34,7 @@ public class PurchaseAmount {
 	 * 
 	 * @return the amount
 	 */
-	public Double getAmount() {
+	public BigDecimal getAmount() {
 		return this.amount;
 	}
 	
@@ -41,7 +43,7 @@ public class PurchaseAmount {
 	 * 
 	 * @param amount the amount to set
 	 */
-	public void setAmount(final Double amount) {
+	public void setAmount(final BigDecimal amount) {
 		this.amount = amount;
 	}
 	
