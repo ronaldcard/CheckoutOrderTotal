@@ -43,11 +43,27 @@ public class ShoppingCartTests {
 		
 		final Item canOfSoup = new Item("can of soup");
 		
-		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(2, Unit.EACH));
-		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(1, Unit.EACH));
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(2.0, Unit.EACH));
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(1.0, Unit.EACH));
 		
 		final PurchaseAmount currentPurchaseAmount = this.shoppingCart.getItemCount(new Item("can of soup"));
 		
 		assertEquals(3, currentPurchaseAmount.getAmount(), 0.0f);
+	}
+	
+	@Test
+	public void addMultipleItem_Test() {
+		
+		final Item canOfSoup = new Item("can of soup");
+		final Item groundBeef = new Item("80% lean ground beef");
+		
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(2.0, Unit.EACH));
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(1.0, Unit.EACH));
+		this.shoppingCart.addItem(groundBeef, new PurchaseAmount(1.50, Unit.POUND));
+		this.shoppingCart.addItem(groundBeef, new PurchaseAmount(2.78, Unit.POUND));
+		
+		final PurchaseAmount currentPurchaseAmount = this.shoppingCart.getItemCount(new Item("can of soup"));
+		
+		assertEquals(3, currentPurchaseAmount.getAmount(), 0); 
 	}
 }

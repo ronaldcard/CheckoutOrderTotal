@@ -40,7 +40,7 @@ public class ShoppingCart {
 		
 		if (this.items.containsKey(item)) {
 			final PurchaseAmount purchaseAmount = this.items.get(item);
-			final float currentCount = purchaseAmount.getAmount();
+			final Double currentCount = purchaseAmount.getAmount();
 						
 			purchaseAmount.setAmount(currentCount + addPurchaseAmount.getAmount());
 		} else {

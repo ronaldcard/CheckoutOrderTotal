@@ -13,7 +13,7 @@ import com.pillar.kata.checkoutordertotal.item.Unit;
  */
 public class PurchaseAmount {
 	
-	private float amount;
+	private Double amount;
 	private Unit unit;
 	
 	/**
@@ -22,7 +22,7 @@ public class PurchaseAmount {
 	 * @param amount the amount
 	 * @param unit the unit
 	 */
-	public PurchaseAmount(final float amount, final Unit unit) {
+	public PurchaseAmount(final Double amount, final Unit unit) {
 		this.amount = amount;
 		this.unit = unit;
 	}
@@ -32,7 +32,7 @@ public class PurchaseAmount {
 	 * 
 	 * @return the amount
 	 */
-	public float getAmount() {
+	public Double getAmount() {
 		return this.amount;
 	}
 	
@@ -41,7 +41,7 @@ public class PurchaseAmount {
 	 * 
 	 * @param amount the amount to set
 	 */
-	public void setAmount(final float amount) {
+	public void setAmount(final Double amount) {
 		this.amount = amount;
 	}
 	
