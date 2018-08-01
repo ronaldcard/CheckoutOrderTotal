@@ -39,7 +39,7 @@ public class ShoppingCartTests {
 	}
 	
 	/**
-	 * Tests adding an item to the shopping cart.
+	 * Tests adding an item to the shopping cart.  Confirms the amount in the shopping cart.
 	 */
 	@Test
 	public void addOneItem_Test() {
@@ -56,7 +56,7 @@ public class ShoppingCartTests {
 	}
 	
 	/**
-	 * Tests adding multiple type of items to the shopping cart.
+	 * Tests adding multiple type of items to the shopping cart.  Confirms the amounts in the shopping carts.
 	 */
 	@Test
 	public void addMultipleItem_Test() {
@@ -75,5 +75,27 @@ public class ShoppingCartTests {
 		assertEquals(new BigDecimal("3"), canOfSoupCurrentPurchaseAmount.getAmount());
 		assertEquals(new PurchaseAmount(new BigDecimal("3"), Unit.EACH), canOfSoupCurrentPurchaseAmount);
 		assertEquals(new PurchaseAmount(new BigDecimal("4.28"), Unit.POUND), groundBeefCurrentPurchaseAmount);
+	}
+	
+	/**
+	 * Tests removing an item from the shopping cart.  Confirms the amount in the shopping cart.
+	 */
+	@Test
+	public void removeAnItem_Test() {
+		
+		final Item canOfSoup = new Item("can of soup");
+		
+		// start with 2
+		this.shoppingCart.addItem(canOfSoup, new PurchaseAmount(new BigDecimal("2"), Unit.EACH));
+		final PurchaseAmount currentPurchaseAmount = this.shoppingCart.getItemCount(new Item("can of soup"));
+		
+		// confirm 2 in the shopping cart
+		assertEquals(new BigDecimal("2"), currentPurchaseAmount.getAmount());
+		
+		// remove an item
+		this.shoppingCart.removeItem(canOfSoup, new PurchaseAmount(new BigDecimal("1"), Unit.EACH));
+		
+		// confirm the updated purchase amount
+		assertEquals(new BigDecimal("1"), currentPurchaseAmount.getAmount());
 	}
 }

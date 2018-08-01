@@ -51,6 +51,33 @@ public class ShoppingCart {
 	}
 	
 	/**
+	 * Removes an {@link Item} from the shopping cart.
+	 * 
+	 * @param item the item to remove
+	 * @param purchaseAmount the purchaseAmount to remove
+	 */
+	public void removeItem(final Item item, final PurchaseAmount removePurchaseAmount) {
+		
+		if (item == null || removePurchaseAmount == null) {
+			return;
+		}
+		
+		if (this.items.containsKey(item)) {
+			final PurchaseAmount purchaseAmount = this.items.get(item);
+			final BigDecimal currentCount = purchaseAmount.getAmount();
+			
+			// make sure there's enough in the shopping cart to remove
+			if (currentCount.compareTo(removePurchaseAmount.getAmount()) > 0 ) { // currentCount is greater than the requested remove amount
+				purchaseAmount.setAmount(currentCount.subtract(removePurchaseAmount.getAmount()));
+			} else {
+				throw new ShoppingCartException("Shopping cart does not contain the amount requested to remove. Currrent PurchaseAmount [" + purchaseAmount + "].");
+			}
+		} else {
+			throw new ShoppingCartException("Could not remove the requested Item. Item does not exist in shopping cart [" + item + "]");
+		}
+	}
+	
+	/**
 	 * Gets the number of the type of {@link Item} in the shopping cart.
 	 * 
 	 * @param item the item
