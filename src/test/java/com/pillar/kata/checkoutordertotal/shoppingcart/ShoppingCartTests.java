@@ -48,7 +48,7 @@ public class ShoppingCartTests {
 		
 		final PurchaseAmount currentPurchaseAmount = this.shoppingCart.getItemCount(new Item("can of soup"));
 		
-		assertEquals(3, currentPurchaseAmount.getAmount(), 0.0f);
+		assertEquals(3, currentPurchaseAmount.getAmount(), 0);
 	}
 	
 	@Test
