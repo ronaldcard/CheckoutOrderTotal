@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pillar.kata.checkoutordertotal.item.Item;
 import com.pillar.kata.checkoutordertotal.item.Price;
+import com.pillar.kata.checkoutordertotal.pricing.special.WeeklySpecial;
 
 /**
  * Pricing Service.
@@ -20,6 +21,7 @@ public class PricingService {
 	
 	private Map<Item, Price> basePrices;
 	private Map<Item, Price> markdownPrices;
+	private Map<Item, WeeklySpecial> weeklySpecials;
 	
 	/**
 	 * Initializes the item prices.
@@ -29,6 +31,7 @@ public class PricingService {
 		
 		this.basePrices = new HashMap<>();
 		this.markdownPrices = new HashMap<>();
+		this.weeklySpecials = new HashMap<>();
 		// potentially load from repository, if we plan to persist the inventory
 	}
 	
@@ -90,6 +93,36 @@ public class PricingService {
 		}
 		
 		this.markdownPrices.put(item, price);
+	}
+	
+	/**
+	 * Gets the {@link WeeklySpecial} for an {@link Item}.
+	 * 
+	 * @param item the item
+	 * @return the special
+	 */
+	public WeeklySpecial getItemWeeklySpecial(final Item item) {
+		
+		if (this.weeklySpecials.containsKey(item)) {
+			return this.weeklySpecials.get(item);
+		}
+		
+		throw new PricingServiceException("No weekly specials configured for [" + item.getDescription() + "]");
+	}
+	
+	/**
+	 * Sets the {@link WeeklySpecial} for an {@link Item}.
+	 * 
+	 * @param item the item
+	 * @param special the special
+	 */
+	public void setItemWeeklySpecial(final Item item, final WeeklySpecial special) {
+		
+		if (item == null || special == null) {
+			return;
+		}
+		
+		this.weeklySpecials.put(item, special);
 	}
 
 	/**

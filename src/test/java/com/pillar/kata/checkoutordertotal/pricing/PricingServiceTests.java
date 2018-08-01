@@ -14,6 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.pillar.kata.checkoutordertotal.item.Item;
 import com.pillar.kata.checkoutordertotal.item.Price;
 import com.pillar.kata.checkoutordertotal.item.Unit;
+import com.pillar.kata.checkoutordertotal.pricing.special.BuyNGetMAtPercentXOff;
+import com.pillar.kata.checkoutordertotal.pricing.special.NforXDollars;
+import com.pillar.kata.checkoutordertotal.pricing.special.WeeklySpecial;
 
 /**
  * Tests for the {@link PricingService}.
@@ -75,7 +78,7 @@ public class PricingServiceTests {
 	}
 	
 	/**
-	 * Tests being able to 
+	 * Tests both setting and getting the markdown price.
 	 */
 	@Test
 	public void configureMarkdowns_Test() {
@@ -106,5 +109,41 @@ public class PricingServiceTests {
 		assertNotNull(configuredBananasMarkdown);
 		assertEquals(new BigDecimal("0.15"), configuredBananasMarkdown.getAmount());
 		assertEquals(Unit.POUND, configuredBananasMarkdown.getUnit());
+	}
+	
+	/**
+	 * Tests both setting and getting the weekly specials.
+	 */
+	@Test
+	public void configureWeeklySpecials_Test() {
+		
+		final WeeklySpecial canOfSoupSpecial = new BuyNGetMAtPercentXOff(1, 1, new BigDecimal("1.00")); // represents 100% => 1 free
+		final WeeklySpecial groundBeefSpecial = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50")); // 50% => half off
+		final WeeklySpecial bananasSpecial = new NforXDollars(3, new BigDecimal("5.00"));
+		
+		this.service.setItemWeeklySpecial(this.canOfSoup, canOfSoupSpecial);
+		this.service.setItemWeeklySpecial(this.groundBeef, groundBeefSpecial);
+		this.service.setItemWeeklySpecial(this.bananas, bananasSpecial);
+		
+		final BuyNGetMAtPercentXOff configuredCanOfSoupSpecial = (BuyNGetMAtPercentXOff) this.service.getItemWeeklySpecial(this.canOfSoup);
+		final BuyNGetMAtPercentXOff configuredGroundBeefSpecial = (BuyNGetMAtPercentXOff) this.service.getItemWeeklySpecial(this.groundBeef);
+		final NforXDollars configuredBananasSpecial = (NforXDollars) this.service.getItemWeeklySpecial(this.bananas);
+		
+		// canOfSoup
+		assertNotNull(configuredCanOfSoupSpecial);
+		assertEquals(new Integer(1), configuredCanOfSoupSpecial.getBuyCount());
+		assertEquals(new Integer(1), configuredCanOfSoupSpecial.getQuantity());
+		assertEquals(new BigDecimal("1.00"), configuredCanOfSoupSpecial.getPercentageOff());
+		
+		// groundBeef
+		assertNotNull(configuredGroundBeefSpecial);
+		assertEquals(new Integer(2), configuredGroundBeefSpecial.getBuyCount());
+		assertEquals(new Integer(1), configuredGroundBeefSpecial.getQuantity());
+		assertEquals(new BigDecimal("0.50"), configuredGroundBeefSpecial.getPercentageOff());
+		
+		// bananas
+		assertNotNull(configuredBananasSpecial);
+		assertEquals(new Integer(3), configuredBananasSpecial.getQuantity());
+		assertEquals(new BigDecimal("5.00"), configuredBananasSpecial.getAmount());
 	}
 }
