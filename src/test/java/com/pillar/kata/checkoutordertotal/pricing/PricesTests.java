@@ -21,14 +21,14 @@ import com.pillar.kata.checkoutordertotal.pricing.special.WeeklySpecial;
 /**
  * Tests for the {@link Prices}.
  * 
- * @author PatientZero
+ * @author tony.card
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Prices.class})
 public class PricesTests {
 	
 	@Autowired
-	private Prices service;
+	private Prices prices;
 	
 	// common test items
 	private Item canOfSoup = new Item("can of soup");
@@ -40,7 +40,7 @@ public class PricesTests {
 	 */
 	@Test
 	public void injectionOfPricingService_Test() {
-		assertNotNull(this.service);
+		assertNotNull(this.prices);
 	}
 	
 	/**
@@ -53,13 +53,13 @@ public class PricesTests {
 		final Price groundBeefPrice = new Price(new BigDecimal("5.99"), Unit.POUND);
 		final Price bananasPrice = new Price(new BigDecimal("2.38"), Unit.POUND);
 		
-		this.service.setBasePriceOfItem(this.canOfSoup, canOfSoupPrice);
-		this.service.setBasePriceOfItem(this.groundBeef, groundBeefPrice);
-		this.service.setBasePriceOfItem(this.bananas, bananasPrice);
+		this.prices.setBasePriceOfItem(this.canOfSoup, canOfSoupPrice);
+		this.prices.setBasePriceOfItem(this.groundBeef, groundBeefPrice);
+		this.prices.setBasePriceOfItem(this.bananas, bananasPrice);
 		
-		final Price configuredCanOfSoupPrice = this.service.getBasePriceOfItem(new Item("can of soup"));
-		final Price configuredGoundBeefPrice = this.service.getBasePriceOfItem(new Item("80% lean ground beef"));
-		final Price configuredBananasPrice = this.service.getBasePriceOfItem(new Item("bananas"));
+		final Price configuredCanOfSoupPrice = this.prices.getBasePriceOfItem(new Item("can of soup"));
+		final Price configuredGoundBeefPrice = this.prices.getBasePriceOfItem(new Item("80% lean ground beef"));
+		final Price configuredBananasPrice = this.prices.getBasePriceOfItem(new Item("bananas"));
 		
 		// canOfSoup
 		assertNotNull(configuredCanOfSoupPrice);
@@ -87,13 +87,13 @@ public class PricesTests {
 		final Price groundBeefMarkdown = new Price(new BigDecimal("0.50"), Unit.POUND);
 		final Price bananasMarkdown = new Price(new BigDecimal("0.15"), Unit.POUND);
 		
-		this.service.setItemMarkdown(this.canOfSoup, canOfSoupMarkdown);
-		this.service.setItemMarkdown(this.groundBeef, groundBeefMarkdown);
-		this.service.setItemMarkdown(this.bananas, bananasMarkdown);
+		this.prices.setItemMarkdown(this.canOfSoup, canOfSoupMarkdown);
+		this.prices.setItemMarkdown(this.groundBeef, groundBeefMarkdown);
+		this.prices.setItemMarkdown(this.bananas, bananasMarkdown);
 		
-		final Price configuredCanOfSoupMarkdown = this.service.getItemMarkdown(new Item("can of soup"));
-		final Price configuredGroundBeefMarkdown = this.service.getItemMarkdown(new Item("80% lean ground beef"));
-		final Price configuredBananasMarkdown = this.service.getItemMarkdown(new Item("bananas"));
+		final Price configuredCanOfSoupMarkdown = this.prices.getItemMarkdown(new Item("can of soup"));
+		final Price configuredGroundBeefMarkdown = this.prices.getItemMarkdown(new Item("80% lean ground beef"));
+		final Price configuredBananasMarkdown = this.prices.getItemMarkdown(new Item("bananas"));
 		
 		// canOfSoup
 		assertNotNull(configuredCanOfSoupMarkdown);
@@ -121,13 +121,13 @@ public class PricesTests {
 		final WeeklySpecial groundBeefSpecial = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50")); // 50% => half off
 		final WeeklySpecial bananasSpecial = new NforXDollars(3, new BigDecimal("5.00"));
 		
-		this.service.setItemWeeklySpecial(this.canOfSoup, canOfSoupSpecial);
-		this.service.setItemWeeklySpecial(this.groundBeef, groundBeefSpecial);
-		this.service.setItemWeeklySpecial(this.bananas, bananasSpecial);
+		this.prices.setItemWeeklySpecial(this.canOfSoup, canOfSoupSpecial);
+		this.prices.setItemWeeklySpecial(this.groundBeef, groundBeefSpecial);
+		this.prices.setItemWeeklySpecial(this.bananas, bananasSpecial);
 		
-		final BuyNGetMAtPercentXOff configuredCanOfSoupSpecial = (BuyNGetMAtPercentXOff) this.service.getItemWeeklySpecial(this.canOfSoup);
-		final BuyNGetMAtPercentXOff configuredGroundBeefSpecial = (BuyNGetMAtPercentXOff) this.service.getItemWeeklySpecial(this.groundBeef);
-		final NforXDollars configuredBananasSpecial = (NforXDollars) this.service.getItemWeeklySpecial(this.bananas);
+		final BuyNGetMAtPercentXOff configuredCanOfSoupSpecial = (BuyNGetMAtPercentXOff) this.prices.getItemWeeklySpecial(this.canOfSoup);
+		final BuyNGetMAtPercentXOff configuredGroundBeefSpecial = (BuyNGetMAtPercentXOff) this.prices.getItemWeeklySpecial(this.groundBeef);
+		final NforXDollars configuredBananasSpecial = (NforXDollars) this.prices.getItemWeeklySpecial(this.bananas);
 		
 		// canOfSoup
 		assertNotNull(configuredCanOfSoupSpecial);

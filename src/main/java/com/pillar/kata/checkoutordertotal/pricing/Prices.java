@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.pillar.kata.checkoutordertotal.item.Item;
 import com.pillar.kata.checkoutordertotal.item.Price;
@@ -16,7 +16,7 @@ import com.pillar.kata.checkoutordertotal.pricing.special.WeeklySpecial;
  * 
  * @author tony.card
  */
-@Service
+@Component
 public class Prices {
 	
 	private Map<Item, Price> basePrices;
