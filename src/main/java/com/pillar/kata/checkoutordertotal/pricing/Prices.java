@@ -47,7 +47,7 @@ public class Prices {
 			return this.basePrices.get(item);
 		}
 		
-		throw new PricingServiceException("No base price is configured for [" + item.getDescription() + "]");
+		throw new PricesException("No base price is configured for [" + item.getDescription() + "]");
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class Prices {
 			return this.markdownPrices.get(item);
 		}
 		
-		throw new PricingServiceException("No markdown price is configured for [" + item.getDescription() + "]");
+		throw new PricesException("No markdown price is configured for [" + item.getDescription() + "]");
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class Prices {
 			return this.weeklySpecials.get(item);
 		}
 		
-		throw new PricingServiceException("No weekly specials configured for [" + item.getDescription() + "]");
+		throw new PricesException("No weekly specials configured for [" + item.getDescription() + "]");
 	}
 	
 	/**
