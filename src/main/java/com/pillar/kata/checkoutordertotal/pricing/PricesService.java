@@ -28,7 +28,7 @@ public class PricesService {
 	 * @param shoppingCart the {@link ShoppingCart}
 	 * @return the dollar amount
 	 */
-	public BigDecimal getBasePriceSubTotalOfItem(final ShoppingCart shoppingCart, final Item item) {
+	public BigDecimal getItemSubTotalBasePrice(final ShoppingCart shoppingCart, final Item item) {
 		
 		BigDecimal preTaxBasePriceSubTotal = new BigDecimal(0);
 		
