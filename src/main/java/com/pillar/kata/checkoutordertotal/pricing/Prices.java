@@ -36,6 +36,23 @@ public class Prices {
 	}
 	
 	/**
+	 * Gets the current {@Link Price} of an {@link Item}.  basePrice - markdown.
+	 * 
+	 * @param item the Item
+	 * @return the current price
+	 */
+	public Price getCurrentPriceOfItem(final Item item) {
+		
+		// TODO - validation??
+		final Price basePrice = getBasePriceOfItem(item);
+		final Price markdown = getItemMarkdown(item);
+		
+		final Price currentPrice = new Price(basePrice.getAmount().subtract(markdown.getAmount()), basePrice.getUnit());
+		
+		return currentPrice;
+	}
+	
+	/**
 	 * Gets the base {@link Price} of an {@link Item} in the inventory.
 	 * 
 	 * @param item the item
