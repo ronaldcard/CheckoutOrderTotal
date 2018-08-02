@@ -43,10 +43,14 @@ public class PricesServiceTests {
 		testPrices.setBasePriceOfItem(GROUND_BEEF, new Price(new BigDecimal("5.99"), Unit.POUND));
 		testPrices.setBasePriceOfItem(BANANAS, new Price(new BigDecimal("2.38"), Unit.POUND));
 		
-		shoppingCart = new ShoppingCart();
-		shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
-		shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
-		shoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("5"), Unit.POUND));
+		testPrices.setItemMarkdown(CAN_OF_SOUP, new Price(new BigDecimal("0.20"), Unit.EACH));
+		testPrices.setItemMarkdown(GROUND_BEEF, new Price(new BigDecimal("0.50"), Unit.POUND));
+		testPrices.setItemMarkdown(BANANAS, new Price(new BigDecimal("0.15"), Unit.POUND));
+		
+		this.shoppingCart = new ShoppingCart();
+		this.shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
+		this.shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
+		this.shoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("5"), Unit.POUND));
 	}
 	
 	/**
@@ -58,7 +62,7 @@ public class PricesServiceTests {
 	}
 	
 	/**
-	 * Tests calculating the base price sub total of an {@link Item}
+	 * Tests calculating an {@link Item} sub total base price.
 	 */
 	@Test
 	public void getItemSubTotalBasePrice_Test() {
@@ -73,4 +77,19 @@ public class PricesServiceTests {
 		assertEquals(new BigDecimal("11.90"), bananasBasePriceSubTotal);
 	}
 	
+	/**
+	 * Tests calculating an {@link Item} sub total with markdown. 
+	 */
+	@Test
+	public void getItemSubTotalWithMarkdown_Test() {
+		
+		final BigDecimal canOfSoupSubTotal = this.service.getItemSubTotalWithMarkdown(this.shoppingCart, CAN_OF_SOUP);
+		assertEquals(new BigDecimal("5.07"), canOfSoupSubTotal); // (1.89 - .20) * 3
+		
+		final BigDecimal groundBeefSubTotal = this.service.getItemSubTotalWithMarkdown(this.shoppingCart, GROUND_BEEF);
+		assertEquals(new BigDecimal("10.98"), groundBeefSubTotal); // (5.99 - .50) * 2
+		
+		final BigDecimal bananasSubTotal = this.service.getItemSubTotalWithMarkdown(this.shoppingCart, BANANAS);
+		assertEquals(new BigDecimal("11.15"), bananasSubTotal); // (2.38 - .15) * 5
+	}
 }
