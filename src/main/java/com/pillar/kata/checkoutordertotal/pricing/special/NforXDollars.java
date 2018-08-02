@@ -6,6 +6,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.pillar.kata.checkoutordertotal.item.Item;
+import com.pillar.kata.checkoutordertotal.item.Price;
+import com.pillar.kata.checkoutordertotal.shoppingcart.PurchaseAmount;
+
 /**
  * Weekly Special implementation.
  * 
@@ -29,6 +33,36 @@ public class NforXDollars implements WeeklySpecial {
 		super();
 		this.quantity = quantity;
 		this.amount = amount;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public BigDecimal getSubTotal(final Item item, final PurchaseAmount purchaseAmount, final Price price) {
+				
+		BigDecimal subTotal = new BigDecimal("0");
+		
+		int currentQuantity = this.quantity - 1;
+		for (int i = purchaseAmount.getAmount().intValue(); i > 0; i--) {
+			
+			subTotal = subTotal.add(price.getAmount());
+			
+			if (currentQuantity == 0) {
+				// subtract the amount
+				final BigDecimal subtractAmount = price.getAmount().multiply(new BigDecimal(this.quantity));
+				subTotal = subTotal.subtract(subtractAmount);
+				
+				// add the for amount
+				subTotal = subTotal.add(this.amount);
+				
+				currentQuantity = this.quantity;
+			} else {
+				currentQuantity--;
+			}
+		}
+		
+		return subTotal;
 	}
 
 	/**
