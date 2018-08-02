@@ -43,11 +43,21 @@ public class Prices {
 	 */
 	public Price getBasePriceOfItem(final Item item) {
 		
-		if (this.basePrices.containsKey(item)) {
+		if (hasBasePrice(item)) {
 			return this.basePrices.get(item);
 		}
 		
 		throw new PricesException("No base price is configured for [" + item.getDescription() + "]");
+	}
+	
+	/**
+	 * Determines if there is a base price for an {@link Item}.
+	 * 
+	 * @param item the Item
+	 * @return true if it does; false otherwise
+	 */
+	public boolean hasBasePrice(final Item item) {
+		return this.basePrices.containsKey(item);
 	}
 	
 	/**
@@ -73,11 +83,21 @@ public class Prices {
 	 */
 	public Price getItemMarkdown(final Item item) {
 		
-		if (this.markdownPrices.containsKey(item)) {
+		if (hasMarkdownPrice(item)) {
 			return this.markdownPrices.get(item);
 		}
 		
 		throw new PricesException("No markdown price is configured for [" + item.getDescription() + "]");
+	}
+	
+	/**
+	 * Determines if there is a markdown for an {@link Item}.
+	 * 
+	 * @param item the Item
+	 * @return true if it does; false otherwise
+	 */
+	public boolean hasMarkdownPrice(final Item item) {
+		return this.markdownPrices.containsKey(item);
 	}
 	
 	/**
@@ -159,5 +179,23 @@ public class Prices {
 	 */
 	public void setMarkdownPrices(Map<Item, Price> markdownPrices) {
 		this.markdownPrices = markdownPrices;
+	}
+
+	/**
+	 * Simple Getter.
+	 * 
+	 * @return the weeklySpecials
+	 */
+	public Map<Item, WeeklySpecial> getWeeklySpecials() {
+		return this.weeklySpecials;
+	}
+
+	/**
+	 * Simple Setter.
+	 * 
+	 * @param weeklySpecials the weeklySpecials to set
+	 */
+	public void setWeeklySpecials(final Map<Item, WeeklySpecial> weeklySpecials) {
+		this.weeklySpecials = weeklySpecials;
 	}
 }
