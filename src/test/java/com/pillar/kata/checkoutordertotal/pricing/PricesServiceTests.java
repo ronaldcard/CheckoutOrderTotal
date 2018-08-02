@@ -33,6 +33,7 @@ public class PricesServiceTests {
 	
 	@Autowired
 	private PricesService service;
+	private ShoppingCart shoppingCart;
 	
 	@Before
 	public void setup() {
@@ -42,6 +43,10 @@ public class PricesServiceTests {
 		testPrices.setBasePriceOfItem(GROUND_BEEF, new Price(new BigDecimal("5.99"), Unit.POUND));
 		testPrices.setBasePriceOfItem(BANANAS, new Price(new BigDecimal("2.38"), Unit.POUND));
 		
+		shoppingCart = new ShoppingCart();
+		shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
+		shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
+		shoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("5"), Unit.POUND));
 	}
 	
 	/**
@@ -58,18 +63,13 @@ public class PricesServiceTests {
 	@Test
 	public void getItemSubTotalBasePrice_Test() {
 		
-		final ShoppingCart shoppingCart = new ShoppingCart();
-		shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
-		shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
-		shoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("5"), Unit.POUND));
-		
-		final BigDecimal canOfSoupBasePriceSubTotal = this.service.getItemSubTotalBasePrice(shoppingCart, CAN_OF_SOUP);
+		final BigDecimal canOfSoupBasePriceSubTotal = this.service.getItemSubTotalBasePrice(this.shoppingCart, CAN_OF_SOUP);
 		assertEquals(new BigDecimal("5.67"), canOfSoupBasePriceSubTotal);
 		
-		final BigDecimal groundBeefBasePriceSubTotal = this.service.getItemSubTotalBasePrice(shoppingCart, GROUND_BEEF);
+		final BigDecimal groundBeefBasePriceSubTotal = this.service.getItemSubTotalBasePrice(this.shoppingCart, GROUND_BEEF);
 		assertEquals(new BigDecimal("11.98"), groundBeefBasePriceSubTotal);
 		
-		final BigDecimal bananasBasePriceSubTotal = this.service.getItemSubTotalBasePrice(shoppingCart, BANANAS);
+		final BigDecimal bananasBasePriceSubTotal = this.service.getItemSubTotalBasePrice(this.shoppingCart, BANANAS);
 		assertEquals(new BigDecimal("11.90"), bananasBasePriceSubTotal);
 	}
 	
