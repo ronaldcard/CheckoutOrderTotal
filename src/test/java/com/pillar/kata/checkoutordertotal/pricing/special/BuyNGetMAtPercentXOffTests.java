@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,6 @@ import com.pillar.kata.checkoutordertotal.item.Unit;
 import com.pillar.kata.checkoutordertotal.pricing.Prices;
 import com.pillar.kata.checkoutordertotal.pricing.PricesService;
 import com.pillar.kata.checkoutordertotal.shoppingcart.PurchaseAmount;
-import com.pillar.kata.checkoutordertotal.shoppingcart.ShoppingCart;
 
 /**
  * Tests for the {@link BuyNGetMAtPercentXOff}.
