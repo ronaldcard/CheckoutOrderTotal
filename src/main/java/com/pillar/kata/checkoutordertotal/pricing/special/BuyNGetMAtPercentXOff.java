@@ -23,7 +23,7 @@ public class BuyNGetMAtPercentXOff implements WeeklySpecial {
 	private Integer buyCount;
 	private Integer quantity;
 	private BigDecimal percentageOff;
-	private Integer limit;
+	private Integer limit; // limit is being defined as a total amt limit
 	
 	/**
 	 * Constructor.
@@ -69,17 +69,22 @@ public class BuyNGetMAtPercentXOff implements WeeklySpecial {
 		final BigDecimal discount = new BigDecimal(this.quantity).multiply(percentageOff).multiply(price.getAmount()).setScale(2, RoundingMode.DOWN);
 		
 		int currentQuantity = this.buyCount;
+		int tempLimit = 0;
 		for (int i = purchaseAmount.getAmount().intValue(); i > 0; i--) {				
 			
 			subTotal = subTotal.add(price.getAmount());
 			
-			if (currentQuantity == 0) {
-				// subtract the discount
-				subTotal = subTotal.subtract(discount);
-				
-				currentQuantity = this.buyCount;
-			} else {
-				currentQuantity--;
+			// if there's a limit, only apply the discount until the limit is reached
+			if (this.limit == null || this.limit > tempLimit) {
+				if (currentQuantity == 0) {
+					// subtract the discount
+					subTotal = subTotal.subtract(discount);
+					
+					currentQuantity = this.buyCount;
+				} else {
+					currentQuantity--;
+				}
+				tempLimit++;
 			}
 		}
 		
