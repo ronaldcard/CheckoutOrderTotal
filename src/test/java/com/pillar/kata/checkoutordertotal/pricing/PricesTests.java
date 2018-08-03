@@ -117,9 +117,9 @@ public class PricesTests {
 	@Test
 	public void configureWeeklySpecials_Test() {
 		
-		final WeeklySpecial canOfSoupSpecial = new BuyNGetMAtPercentXOff(1, 1, new BigDecimal("1.00")); // represents 100% => 1 free
-		final WeeklySpecial groundBeefSpecial = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50")); // 50% => half off
-		final WeeklySpecial bananasSpecial = new NforXDollars(3, new BigDecimal("5.00"));
+		final WeeklySpecial canOfSoupSpecial = new BuyNGetMAtPercentXOff(1, 1, new BigDecimal("1.00"), 6); // represents 100% => 1 free
+		final WeeklySpecial groundBeefSpecial = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50"), 6); // 50% => half off
+		final WeeklySpecial bananasSpecial = new NforXDollars(3, new BigDecimal("5.00"), 6);
 		
 		this.prices.setItemWeeklySpecial(this.canOfSoup, canOfSoupSpecial);
 		this.prices.setItemWeeklySpecial(this.groundBeef, groundBeefSpecial);
@@ -134,16 +134,19 @@ public class PricesTests {
 		assertEquals(new Integer(1), configuredCanOfSoupSpecial.getBuyCount());
 		assertEquals(new Integer(1), configuredCanOfSoupSpecial.getQuantity());
 		assertEquals(new BigDecimal("1.00"), configuredCanOfSoupSpecial.getPercentageOff());
+		assertEquals(new Integer(6), configuredCanOfSoupSpecial.getLimit());
 		
 		// groundBeef
 		assertNotNull(configuredGroundBeefSpecial);
 		assertEquals(new Integer(2), configuredGroundBeefSpecial.getBuyCount());
 		assertEquals(new Integer(1), configuredGroundBeefSpecial.getQuantity());
 		assertEquals(new BigDecimal("0.50"), configuredGroundBeefSpecial.getPercentageOff());
+		assertEquals(new Integer(6), configuredGroundBeefSpecial.getLimit());
 		
 		// bananas
 		assertNotNull(configuredBananasSpecial);
 		assertEquals(new Integer(3), configuredBananasSpecial.getQuantity());
 		assertEquals(new BigDecimal("5.00"), configuredBananasSpecial.getAmount());
+		assertEquals(new Integer(6), configuredBananasSpecial.getLimit());
 	}
 }
