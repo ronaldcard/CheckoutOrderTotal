@@ -140,11 +140,21 @@ public class Prices {
 	 */
 	public WeeklySpecial getItemWeeklySpecial(final Item item) {
 		
-		if (this.weeklySpecials.containsKey(item)) {
+		if (hasWeeklySpecial(item)) {
 			return this.weeklySpecials.get(item);
 		}
 		
 		throw new PricesException("No weekly specials configured for [" + item.getDescription() + "]");
+	}
+	
+	/**
+	 * Determines if there is a weekly special for an {@link Item}.
+	 * 
+	 * @param item the item
+	 * @return true if it does; false, otherwise
+	 */
+	public boolean hasWeeklySpecial(final Item item) {
+		return this.weeklySpecials.containsKey(item);
 	}
 	
 	/**
