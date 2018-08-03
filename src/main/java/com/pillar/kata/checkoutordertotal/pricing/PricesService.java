@@ -34,18 +34,15 @@ public class PricesService {
 		
 		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
-		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
-			final Item shoppingCartItem = entry.getKey();
-			final PurchaseAmount purchaseAmount = entry.getValue();
+		final PurchaseAmount purchaseAmount = shoppingCart.getItemCount(item);
+		
+		if (purchaseAmount != null && this.prices.hasBasePrice(item)) {
 			
-			if (shoppingCartItem.equals(item) && this.prices.hasBasePrice(item)) {
-				
-				final Price basePrice = this.prices.getBasePriceOfItem(item);
-				
-				final BigDecimal itemSubTotal = calculateItemSubTotalBasePrice(basePrice, purchaseAmount);
-				
-				basePriceSubTotal = basePriceSubTotal.add(itemSubTotal);
-			}
+			final Price basePrice = this.prices.getBasePriceOfItem(item);
+			
+			final BigDecimal itemSubTotal = calculateItemSubTotalBasePrice(basePrice, purchaseAmount);
+			
+			basePriceSubTotal = basePriceSubTotal.add(itemSubTotal);
 		}
 		
 		return basePriceSubTotal;
@@ -62,18 +59,15 @@ public class PricesService {
 		
 		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
-		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
-			final Item shoppingCartItem = entry.getKey();
-			final PurchaseAmount purchaseAmount = entry.getValue();
+		final PurchaseAmount purchaseAmount = shoppingCart.getItemCount(item);
+		
+		if (purchaseAmount != null && this.prices.hasMarkdownPrice(item)) {
 			
-			if (shoppingCartItem.equals(item) && this.prices.hasMarkdownPrice(item)) {
-				
-				final Price basePrice = this.prices.getBasePriceOfItem(item);
-				final Price markdown = this.prices.getItemMarkdown(item);
-				final BigDecimal itemSubTotal = this.calculateItemSubTotalWithMarkdown(basePrice, markdown, purchaseAmount);
-			
-				basePriceSubTotal = basePriceSubTotal.add(itemSubTotal);
-			}
+			final Price basePrice = this.prices.getBasePriceOfItem(item);
+			final Price markdown = this.prices.getItemMarkdown(item);
+			final BigDecimal itemSubTotal = this.calculateItemSubTotalWithMarkdown(basePrice, markdown, purchaseAmount);
+		
+			basePriceSubTotal = basePriceSubTotal.add(itemSubTotal);
 		}
 		
 		return basePriceSubTotal;
@@ -90,20 +84,17 @@ public class PricesService {
 		
 		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
-		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
-			final Item shoppingCartItem = entry.getKey();
-			final PurchaseAmount purchaseAmount = entry.getValue();
+		final PurchaseAmount purchaseAmount = shoppingCart.getItemCount(item);
 			
-			if (shoppingCartItem.equals(item) && this.prices.hasWeeklySpecial(item)) {
-				
-				final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
-				
-				final WeeklySpecial weeklySpecial = this.prices.getWeeklySpecials().get(item);
-				
-				final BigDecimal weeklySpecialSubTotal = weeklySpecial.getSubTotal(item, purchaseAmount, currenPriceOfItem);
-				
-				basePriceSubTotal = basePriceSubTotal.add(weeklySpecialSubTotal);
-			}
+		if (purchaseAmount != null && this.prices.hasWeeklySpecial(item)) {
+			
+			final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
+			
+			final WeeklySpecial weeklySpecial = this.prices.getWeeklySpecials().get(item);
+			
+			final BigDecimal weeklySpecialSubTotal = weeklySpecial.getSubTotal(item, purchaseAmount, currenPriceOfItem);
+			
+			basePriceSubTotal = basePriceSubTotal.add(weeklySpecialSubTotal);
 		}
 		
 		return basePriceSubTotal;
@@ -122,9 +113,9 @@ public class PricesService {
 		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
 			final Item item = entry.getKey();
 			final PurchaseAmount purchaseAmount = entry.getValue();
+			final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
 			
 			if (this.prices.hasWeeklySpecial(item)) {
-				final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
 				
 				final WeeklySpecial weeklySpecial = this.prices.getWeeklySpecials().get(item);
 				
