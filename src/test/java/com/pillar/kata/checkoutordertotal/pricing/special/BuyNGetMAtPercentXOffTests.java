@@ -110,8 +110,29 @@ public class BuyNGetMAtPercentXOffTests {
 		final BigDecimal groundBeefSubTotal = buy2Get1HalfOff.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, GROUND_BEEF_PRICE);
 		final BigDecimal bananasSubTotal = buy2Get1HalfOff.getSubTotal(BANANAS, bananasPurchaseAmount, BANANAS_PRICE);
 		
-		assertEquals(new BigDecimal("4.23"), canOfSoupSubTotal); // 3 cans @ 1.69 -> first=1.69, second=1.69, third=1.69
+		assertEquals(new BigDecimal("4.23"), canOfSoupSubTotal); // 3 cans @ 1.69 -> first=1.69, second=1.69, third=.85
 		assertEquals(new BigDecimal("10.98"), groundBeefSubTotal); // 2 pounds @ 5.49 -> first=5.49, second=5.49 
 		assertEquals(new BigDecimal("10.08"), bananasSubTotal); // 5 pounds @ 2.24 -> first=2.24, second=2.24, third=1.12, fourth=2.24, fifth=2.24
+	}
+	
+	/**
+	 * Tests a buy 2 get 1 50% off limit 6 weekly special.
+	 */
+	@Test
+	public void buy2Get1HalfOffLimit6_Test() {
+		
+		final BuyNGetMAtPercentXOff buy2Get1HalfOffLimit6 = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50"), 6);
+		
+		final PurchaseAmount canOfSoupPurchaseAmount = this.largeShoppingCart.getItemCount(CAN_OF_SOUP);
+		final PurchaseAmount groundBeefPurchaseAmount = this.largeShoppingCart.getItemCount(GROUND_BEEF);
+		final PurchaseAmount bananasPurchaseAmount = this.largeShoppingCart.getItemCount(BANANAS);
+		
+		final BigDecimal canOfSoupSubTotal = buy2Get1HalfOffLimit6.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = buy2Get1HalfOffLimit6.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = buy2Get1HalfOffLimit6.getSubTotal(BANANAS, bananasPurchaseAmount, BANANAS_PRICE);
+		
+		assertEquals(new BigDecimal("8.46"), canOfSoupSubTotal); // 6 cans @ 1.69 -> 1:1.69, 2:1.69, 3:.85, 4:1.69, 5:1.69, 6:.85
+		assertEquals(new BigDecimal("19.22"), groundBeefSubTotal); // 4 pounds @ 5.49 -> 1:5.49, 2:5.49, 3:2.75, 4:5.49
+		assertEquals(new BigDecimal("20.16"), bananasSubTotal); // 10 pounds @ 2.24 -> 1:2.24, 2:2.24, 3:1.12, 4:2.24, 5:2.24, 6:1.12, 7:2.24, 8:2.24, 9:2.24, 10:2.24
 	}
 }
