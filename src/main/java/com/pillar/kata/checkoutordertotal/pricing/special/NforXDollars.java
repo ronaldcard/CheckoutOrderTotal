@@ -44,21 +44,25 @@ public class NforXDollars implements WeeklySpecial {
 		BigDecimal subTotal = new BigDecimal("0");
 		
 		int currentQuantity = this.quantity - 1;
+		int tempLimit = 0;
 		for (int i = purchaseAmount.getAmount().intValue(); i > 0; i--) {
 			
 			subTotal = subTotal.add(price.getAmount());
 			
-			if (currentQuantity == 0) {
-				// subtract the amount
-				final BigDecimal subtractAmount = price.getAmount().multiply(new BigDecimal(this.quantity));
-				subTotal = subTotal.subtract(subtractAmount);
-				
-				// add the for amount
-				subTotal = subTotal.add(this.amount);
-				
-				currentQuantity = this.quantity;
-			} else {
-				currentQuantity--;
+			// if there's a limit, only apply the discount until the limit is reached
+			if (this.limit == null || this.limit > tempLimit) {
+				if (currentQuantity == 0) {
+					// subtract the amount
+					final BigDecimal subtractAmount = price.getAmount().multiply(new BigDecimal(this.quantity));
+					subTotal = subTotal.subtract(subtractAmount);
+					
+					// add the for amount
+					subTotal = subTotal.add(this.amount);
+					
+					currentQuantity = this.quantity;
+				} else {
+					currentQuantity--;
+				}
 			}
 		}
 		

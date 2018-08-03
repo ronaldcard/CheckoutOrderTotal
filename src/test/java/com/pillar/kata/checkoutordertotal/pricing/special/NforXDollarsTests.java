@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,6 @@ import com.pillar.kata.checkoutordertotal.item.Unit;
 import com.pillar.kata.checkoutordertotal.pricing.Prices;
 import com.pillar.kata.checkoutordertotal.pricing.PricesService;
 import com.pillar.kata.checkoutordertotal.shoppingcart.PurchaseAmount;
-import com.pillar.kata.checkoutordertotal.shoppingcart.ShoppingCart;
 
 /**
  * .
@@ -31,22 +29,14 @@ public class NforXDollarsTests {
 	private static final Item GROUND_BEEF = new Item("80% lean ground beef");
 	private static final Item BANANAS = new Item("bananas");
 	
-	private ShoppingCart shoppingCart;
-	private NforXDollars threeFor5;
-	private NforXDollars twoFor399;
+	private static final Price CAN_OF_SOUP_PRICE = new Price(new BigDecimal("1.69"), Unit.EACH);
+	private static final Price GROUND_BEEF_PRICE = new Price(new BigDecimal("5.49"), Unit.POUND);
+	private static final Price BANANAS_PRICE = new Price(new BigDecimal("2.24"), Unit.POUND);
 	
+	private static final PurchaseAmount CAN_OF_SOUP_PURCHASE_AMOUNT = new PurchaseAmount(new BigDecimal("3"), Unit.EACH);
+	private static final PurchaseAmount GROUND_BEEF_PURCHASE_AMOUNT = new PurchaseAmount(new BigDecimal("2"), Unit.POUND);
+	private static final PurchaseAmount BANANAS_PURCHASE_AMOUNT = new PurchaseAmount(new BigDecimal("5"), Unit.POUND);
 	
-	@Before
-	public void setup() {
-		
-		this.shoppingCart = new ShoppingCart();
-		this.shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
-		this.shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
-		this.shoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("5"), Unit.POUND));
-		
-		this.threeFor5 = new NforXDollars(3, new BigDecimal("5.00"));
-		this.twoFor399 = new NforXDollars(2, new BigDecimal("3.99"));
-	}
 	
 	/**
 	 * Test the 3 for $5.00 weekly special
@@ -54,18 +44,11 @@ public class NforXDollarsTests {
 	@Test
 	public void threeFor5_Test() {
 		
-		final PurchaseAmount canOfSoupPurchaseAmount = this.shoppingCart.getItemCount(CAN_OF_SOUP);
-		final Price canOfSoupCurrentPrice = new Price(new BigDecimal("1.69"), Unit.EACH);
+		final NforXDollars threeFor5 = new NforXDollars(3, new BigDecimal("5.00"));
 		
-		final PurchaseAmount groundBeefPurchaseAmount = this.shoppingCart.getItemCount(GROUND_BEEF);
-		final Price groundBeefCurrentPrice = new Price(new BigDecimal("5.49"), Unit.POUND);
-		
-		final PurchaseAmount bananasPurchaseAmount = this.shoppingCart.getItemCount(BANANAS);
-		final Price bananasCurrentPrice = new Price(new BigDecimal("2.24"), Unit.POUND);
-		
-		final BigDecimal canOfSoupSubTotal = this.threeFor5.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, canOfSoupCurrentPrice);
-		final BigDecimal groundBeefSubTotal = this.threeFor5.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, groundBeefCurrentPrice);
-		final BigDecimal bananasSubTotal = this.threeFor5.getSubTotal(BANANAS, bananasPurchaseAmount, bananasCurrentPrice);
+		final BigDecimal canOfSoupSubTotal = threeFor5.getSubTotal(CAN_OF_SOUP, CAN_OF_SOUP_PURCHASE_AMOUNT, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = threeFor5.getSubTotal(GROUND_BEEF, GROUND_BEEF_PURCHASE_AMOUNT, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = threeFor5.getSubTotal(BANANAS, BANANAS_PURCHASE_AMOUNT, BANANAS_PRICE);
 		
 		assertEquals(new BigDecimal("5.00"), canOfSoupSubTotal); // 3 cans @ 1.69 -> 1-3 = 5.00 
 		assertEquals(new BigDecimal("10.98"), groundBeefSubTotal); // 2 pounds @ 5.49 -> first=5.49, second=5.49
@@ -78,18 +61,11 @@ public class NforXDollarsTests {
 	@Test
 	public void twoFor399_Test() {
 		
-		final PurchaseAmount canOfSoupPurchaseAmount = this.shoppingCart.getItemCount(CAN_OF_SOUP);
-		final Price canOfSoupCurrentPrice = new Price(new BigDecimal("1.69"), Unit.EACH);
+		final NforXDollars twoFor399 = new NforXDollars(2, new BigDecimal("3.99"));
 		
-		final PurchaseAmount groundBeefPurchaseAmount = this.shoppingCart.getItemCount(GROUND_BEEF);
-		final Price groundBeefCurrentPrice = new Price(new BigDecimal("5.49"), Unit.POUND);
-		
-		final PurchaseAmount bananasPurchaseAmount = this.shoppingCart.getItemCount(BANANAS);
-		final Price bananasCurrentPrice = new Price(new BigDecimal("2.24"), Unit.POUND);
-		
-		final BigDecimal canOfSoupSubTotal = this.twoFor399.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, canOfSoupCurrentPrice);
-		final BigDecimal groundBeefSubTotal = this.twoFor399.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, groundBeefCurrentPrice);
-		final BigDecimal bananasSubTotal = this.twoFor399.getSubTotal(BANANAS, bananasPurchaseAmount, bananasCurrentPrice);
+		final BigDecimal canOfSoupSubTotal = twoFor399.getSubTotal(CAN_OF_SOUP, CAN_OF_SOUP_PURCHASE_AMOUNT, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = twoFor399.getSubTotal(GROUND_BEEF, GROUND_BEEF_PURCHASE_AMOUNT, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = twoFor399.getSubTotal(BANANAS, BANANAS_PURCHASE_AMOUNT, BANANAS_PRICE);
 		
 		assertEquals(new BigDecimal("5.68"), canOfSoupSubTotal); // 3 cans @ 1.69 -> 1-2 = 3.99 + 1.69 
 		assertEquals(new BigDecimal("3.99"), groundBeefSubTotal); // 2 pounds @ 5.49 -> 1-2 = 3.99
