@@ -32,7 +32,7 @@ public class PricesService {
 	 */
 	public BigDecimal getItemSubTotalBasePrice(final ShoppingCart shoppingCart, final Item item) {
 		
-		BigDecimal basePriceSubTotal = new BigDecimal("0");
+		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
 		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
 			final Item shoppingCartItem = entry.getKey();
@@ -60,7 +60,7 @@ public class PricesService {
 	 */
 	public BigDecimal getItemSubTotalWithMarkdown(final ShoppingCart shoppingCart, final Item item) {
 		
-		BigDecimal basePriceSubTotal = new BigDecimal("0");
+		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
 		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
 			final Item shoppingCartItem = entry.getKey();
@@ -88,13 +88,13 @@ public class PricesService {
 	 */
 	public BigDecimal getItemSubTotalWeeklySpecial(final ShoppingCart shoppingCart, final Item item) {
 		
-		BigDecimal basePriceSubTotal = new BigDecimal("0");
+		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
 		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
 			final Item shoppingCartItem = entry.getKey();
 			final PurchaseAmount purchaseAmount = entry.getValue();
 			
-			if (shoppingCartItem.equals(item) && this.prices.getWeeklySpecials().containsKey(item)) {
+			if (shoppingCartItem.equals(item) && this.prices.hasWeeklySpecial(item)) {
 				
 				final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
 				
@@ -107,6 +107,41 @@ public class PricesService {
 		}
 		
 		return basePriceSubTotal;
+	}
+	
+	/**
+	 * Calculates the current sub total of the {@link ShoppingCart}.  This includes the weekly specials & markdowns.
+	 * 
+	 * @param shoppingCart the ShoppingCart
+	 * @return the dollar amount
+	 */
+	public BigDecimal getSubTotalOfShoppingCart(final ShoppingCart shoppingCart) {
+		
+		BigDecimal subTotal = BigDecimal.ZERO;
+		
+		for (Entry<Item, PurchaseAmount> entry : shoppingCart.getItems().entrySet()) {
+			final Item item = entry.getKey();
+			final PurchaseAmount purchaseAmount = entry.getValue();
+			
+			if (this.prices.hasWeeklySpecial(item)) {
+				final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
+				
+				final WeeklySpecial weeklySpecial = this.prices.getWeeklySpecials().get(item);
+				
+				final BigDecimal weeklySpecialSubTotal = weeklySpecial.getSubTotal(item, purchaseAmount, currenPriceOfItem);
+				
+				subTotal = subTotal.add(weeklySpecialSubTotal);
+			} else {
+				
+				final Price basePrice = this.prices.getBasePriceOfItem(item);
+				final Price markdown = this.prices.getItemMarkdown(item);
+				final BigDecimal itemSubTotal = this.calculateItemSubTotalWithMarkdown(basePrice, markdown, purchaseAmount);
+				
+				subTotal = subTotal.add(itemSubTotal);
+			}
+		}
+		
+		return subTotal;
 	}
 	
 	/**

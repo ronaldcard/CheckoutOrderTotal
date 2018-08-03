@@ -118,4 +118,15 @@ public class PricesServiceTests {
 		final BigDecimal bananasSubTotal = this.service.getItemSubTotalWeeklySpecial(this.shoppingCart, BANANAS);
 		assertEquals(new BigDecimal("9.46"), bananasSubTotal); // 5 pounds @ 2.23 | 3 for $5 | -> 1-3 = 5.00 + 2 * 2.23
 	}
+	
+	/**
+	 * Tests calculating the sub-total of the entire shopping cart with weekly specials and markdowns.
+	 */
+	@Test
+	public void getSubTotalOfShoppingCart_Test() {
+		
+		final BigDecimal preTaxSubTotal = this.service.getSubTotalOfShoppingCart(this.shoppingCart);
+		
+		assertEquals(new BigDecimal("23.82"), preTaxSubTotal);
+	}
 }
