@@ -35,22 +35,13 @@ public class BuyNGetMAtPercentXOffTests {
 	private static final Price GROUND_BEEF_PRICE = new Price(new BigDecimal("5.49"), Unit.POUND);
 	private static final Price BANANAS_PRICE = new Price(new BigDecimal("2.24"), Unit.POUND);
 	
-	private ShoppingCart shoppingCart;
-	private ShoppingCart largeShoppingCart;
+	private static final PurchaseAmount CAN_OF_SOUP_PURCHASE_AMOUNT = new PurchaseAmount(new BigDecimal("3"), Unit.EACH);
+	private static final PurchaseAmount GROUND_BEEF_PURCHASE_AMOUNT = new PurchaseAmount(new BigDecimal("2"), Unit.POUND);
+	private static final PurchaseAmount BANANAS_PURCHASE_AMOUNT = new PurchaseAmount(new BigDecimal("5"), Unit.POUND);
 	
-	@Before
-	public void setup() {
-		
-		this.shoppingCart = new ShoppingCart();
-		this.shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
-		this.shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
-		this.shoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("5"), Unit.POUND));
-		
-		this.largeShoppingCart = new ShoppingCart();
-		this.largeShoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("6"), Unit.EACH));
-		this.largeShoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("4"), Unit.POUND));
-		this.largeShoppingCart.addItem(BANANAS, new PurchaseAmount(new BigDecimal("10"), Unit.POUND));
-	}
+	private static final PurchaseAmount CAN_OF_SOUP_PURCHASE_LARGE_AMOUNT = new PurchaseAmount(new BigDecimal("6"), Unit.EACH);
+	private static final PurchaseAmount GROUND_BEEF_PURCHASE_LARGE_AMOUNT = new PurchaseAmount(new BigDecimal("4"), Unit.POUND);
+	private static final PurchaseAmount BANANAS_PURCHASE_LARGE_AMOUNT = new PurchaseAmount(new BigDecimal("10"), Unit.POUND);
 	
 	/**
 	 * Tests a buy 1 get 1 free weekly special.
@@ -60,13 +51,9 @@ public class BuyNGetMAtPercentXOffTests {
 		
 		final BuyNGetMAtPercentXOff buy1Get1Free = new BuyNGetMAtPercentXOff(1, 1, new BigDecimal("1"));
 		
-		final PurchaseAmount canOfSoupPurchaseAmount = this.shoppingCart.getItemCount(CAN_OF_SOUP);
-		final PurchaseAmount groundBeefPurchaseAmount = this.shoppingCart.getItemCount(GROUND_BEEF);
-		final PurchaseAmount bananasPurchaseAmount = this.shoppingCart.getItemCount(BANANAS);
-		
-		final BigDecimal canOfSoupSubTotal = buy1Get1Free.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, CAN_OF_SOUP_PRICE);
-		final BigDecimal groundBeefSubTotal = buy1Get1Free.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, GROUND_BEEF_PRICE);
-		final BigDecimal bananasSubTotal = buy1Get1Free.getSubTotal(BANANAS, bananasPurchaseAmount, BANANAS_PRICE);
+		final BigDecimal canOfSoupSubTotal = buy1Get1Free.getSubTotal(CAN_OF_SOUP, CAN_OF_SOUP_PURCHASE_AMOUNT, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = buy1Get1Free.getSubTotal(GROUND_BEEF, GROUND_BEEF_PURCHASE_AMOUNT, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = buy1Get1Free.getSubTotal(BANANAS, BANANAS_PURCHASE_AMOUNT, BANANAS_PRICE);
 		
 		assertEquals(new BigDecimal("3.38"), canOfSoupSubTotal); // 3 cans @ 1.69 -> first=1.69, second=free, third=1.69
 		assertEquals(new BigDecimal("5.49"), groundBeefSubTotal); // 2 pounds @ 5.49 -> first=5.49, second=free
@@ -81,13 +68,9 @@ public class BuyNGetMAtPercentXOffTests {
 		
 		final BuyNGetMAtPercentXOff buy1Get1FreeLimit6 = new BuyNGetMAtPercentXOff(1, 1, new BigDecimal("1"), 6);
 		
-		final PurchaseAmount canOfSoupPurchaseAmount = this.largeShoppingCart.getItemCount(CAN_OF_SOUP);
-		final PurchaseAmount groundBeefPurchaseAmount = this.largeShoppingCart.getItemCount(GROUND_BEEF);
-		final PurchaseAmount bananasPurchaseAmount = this.largeShoppingCart.getItemCount(BANANAS);
-		
-		final BigDecimal canOfSoupSubTotal = buy1Get1FreeLimit6.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, CAN_OF_SOUP_PRICE);
-		final BigDecimal groundBeefSubTotal = buy1Get1FreeLimit6.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, GROUND_BEEF_PRICE);
-		final BigDecimal bananasSubTotal = buy1Get1FreeLimit6.getSubTotal(BANANAS, bananasPurchaseAmount, BANANAS_PRICE);
+		final BigDecimal canOfSoupSubTotal = buy1Get1FreeLimit6.getSubTotal(CAN_OF_SOUP, CAN_OF_SOUP_PURCHASE_LARGE_AMOUNT, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = buy1Get1FreeLimit6.getSubTotal(GROUND_BEEF, GROUND_BEEF_PURCHASE_LARGE_AMOUNT, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = buy1Get1FreeLimit6.getSubTotal(BANANAS, BANANAS_PURCHASE_LARGE_AMOUNT, BANANAS_PRICE);
 		
 		assertEquals(new BigDecimal("5.07"), canOfSoupSubTotal); // 6 cans @ 1.69 | buy1Get1FreeLimit6 | -> 1:1.69, 2:free, 3:1.69, 4:free, 5:1.69, 6:free
 		assertEquals(new BigDecimal("10.98"), groundBeefSubTotal); // 4 pounds @ 5.49 | buy1Get1FreeLimit6 | -> 1:5.49, 2: free, 3:5.49, 4:free
@@ -102,13 +85,9 @@ public class BuyNGetMAtPercentXOffTests {
 		
 		final BuyNGetMAtPercentXOff buy2Get1HalfOff = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50"));
 		
-		final PurchaseAmount canOfSoupPurchaseAmount = this.shoppingCart.getItemCount(CAN_OF_SOUP);
-		final PurchaseAmount groundBeefPurchaseAmount = this.shoppingCart.getItemCount(GROUND_BEEF);
-		final PurchaseAmount bananasPurchaseAmount = this.shoppingCart.getItemCount(BANANAS);
-		
-		final BigDecimal canOfSoupSubTotal = buy2Get1HalfOff.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, CAN_OF_SOUP_PRICE);
-		final BigDecimal groundBeefSubTotal = buy2Get1HalfOff.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, GROUND_BEEF_PRICE);
-		final BigDecimal bananasSubTotal = buy2Get1HalfOff.getSubTotal(BANANAS, bananasPurchaseAmount, BANANAS_PRICE);
+		final BigDecimal canOfSoupSubTotal = buy2Get1HalfOff.getSubTotal(CAN_OF_SOUP, CAN_OF_SOUP_PURCHASE_AMOUNT, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = buy2Get1HalfOff.getSubTotal(GROUND_BEEF, GROUND_BEEF_PURCHASE_AMOUNT, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = buy2Get1HalfOff.getSubTotal(BANANAS, BANANAS_PURCHASE_AMOUNT, BANANAS_PRICE);
 		
 		assertEquals(new BigDecimal("4.23"), canOfSoupSubTotal); // 3 cans @ 1.69 -> first=1.69, second=1.69, third=.85
 		assertEquals(new BigDecimal("10.98"), groundBeefSubTotal); // 2 pounds @ 5.49 -> first=5.49, second=5.49 
@@ -123,13 +102,9 @@ public class BuyNGetMAtPercentXOffTests {
 		
 		final BuyNGetMAtPercentXOff buy2Get1HalfOffLimit6 = new BuyNGetMAtPercentXOff(2, 1, new BigDecimal("0.50"), 6);
 		
-		final PurchaseAmount canOfSoupPurchaseAmount = this.largeShoppingCart.getItemCount(CAN_OF_SOUP);
-		final PurchaseAmount groundBeefPurchaseAmount = this.largeShoppingCart.getItemCount(GROUND_BEEF);
-		final PurchaseAmount bananasPurchaseAmount = this.largeShoppingCart.getItemCount(BANANAS);
-		
-		final BigDecimal canOfSoupSubTotal = buy2Get1HalfOffLimit6.getSubTotal(CAN_OF_SOUP, canOfSoupPurchaseAmount, CAN_OF_SOUP_PRICE);
-		final BigDecimal groundBeefSubTotal = buy2Get1HalfOffLimit6.getSubTotal(GROUND_BEEF, groundBeefPurchaseAmount, GROUND_BEEF_PRICE);
-		final BigDecimal bananasSubTotal = buy2Get1HalfOffLimit6.getSubTotal(BANANAS, bananasPurchaseAmount, BANANAS_PRICE);
+		final BigDecimal canOfSoupSubTotal = buy2Get1HalfOffLimit6.getSubTotal(CAN_OF_SOUP, CAN_OF_SOUP_PURCHASE_LARGE_AMOUNT, CAN_OF_SOUP_PRICE);
+		final BigDecimal groundBeefSubTotal = buy2Get1HalfOffLimit6.getSubTotal(GROUND_BEEF, GROUND_BEEF_PURCHASE_LARGE_AMOUNT, GROUND_BEEF_PRICE);
+		final BigDecimal bananasSubTotal = buy2Get1HalfOffLimit6.getSubTotal(BANANAS, BANANAS_PURCHASE_LARGE_AMOUNT, BANANAS_PRICE);
 		
 		assertEquals(new BigDecimal("8.46"), canOfSoupSubTotal); // 6 cans @ 1.69 -> 1:1.69, 2:1.69, 3:.85, 4:1.69, 5:1.69, 6:.85
 		assertEquals(new BigDecimal("19.22"), groundBeefSubTotal); // 4 pounds @ 5.49 -> 1:5.49, 2:5.49, 3:2.75, 4:5.49
