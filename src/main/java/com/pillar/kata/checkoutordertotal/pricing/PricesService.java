@@ -124,9 +124,7 @@ public class PricesService {
 				subTotal = subTotal.add(weeklySpecialSubTotal);
 			} else {
 				
-				final Price basePrice = this.prices.getBasePriceOfItem(item);
-				final Price markdown = this.prices.getItemMarkdown(item);
-				final BigDecimal itemSubTotal = this.calculateItemSubTotalWithMarkdown(basePrice, markdown, purchaseAmount);
+				final BigDecimal itemSubTotal = this.calculateItemCurrentSubTotal(currenPriceOfItem, purchaseAmount);
 				
 				subTotal = subTotal.add(itemSubTotal);
 			}
@@ -157,6 +155,18 @@ public class PricesService {
 		
 		return (basePrice.getAmount().subtract(markdown.getAmount())).multiply(purchaseAmount.getAmount());
 	}
+	
+	/**
+	 * 
+	 * @param currentPrice
+	 * @param purchaseAmount
+	 * @return
+	 */
+	private BigDecimal calculateItemCurrentSubTotal(final Price currentPrice, final PurchaseAmount purchaseAmount) {
+		
+		return currentPrice.getAmount().multiply(purchaseAmount.getAmount());
+	}
+	
 	
 	/**
 	 * @return the prices
