@@ -26,13 +26,25 @@ public class NforXDollars implements WeeklySpecial {
 	/**
 	 * Constructor.
 	 * 
-	 * @param quantity 
-	 * @param amount
+	 * @param quantity the number of items
+	 * @param amount the amount to discount
 	 */
-	public NforXDollars(Integer quantity, BigDecimal amount) {
-		super();
+	public NforXDollars(final Integer quantity, final BigDecimal amount) {
 		this.quantity = quantity;
 		this.amount = amount;
+	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param quantity the number of items
+	 * @param amount the amount to discount
+	 * @param limit the total number of items before the discount no longer applies
+	 */
+	public NforXDollars(final Integer quantity, final BigDecimal amount, final Integer limit) {
+		this.quantity = quantity;
+		this.amount = amount;
+		this.limit = limit;
 	}
 	
 	/**
