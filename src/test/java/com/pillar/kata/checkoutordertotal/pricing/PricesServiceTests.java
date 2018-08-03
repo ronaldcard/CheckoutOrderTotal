@@ -57,7 +57,6 @@ public class PricesServiceTests {
 		testPrices.setItemWeeklySpecial(GROUND_BEEF, buy2Get1HalfOff);
 		testPrices.setItemWeeklySpecial(BANANAS, threeFor5);
 		
-		
 		this.shoppingCart = new ShoppingCart();
 		this.shoppingCart.addItem(CAN_OF_SOUP, new PurchaseAmount(new BigDecimal("3"), Unit.EACH));
 		this.shoppingCart.addItem(GROUND_BEEF, new PurchaseAmount(new BigDecimal("2"), Unit.POUND));
