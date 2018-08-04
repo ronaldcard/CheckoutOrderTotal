@@ -93,13 +93,13 @@ public class PricesServiceTests {
 	@Test
 	public void getItemSubTotalWithMarkdown_Test() {
 		
-		final BigDecimal canOfSoupSubTotal = this.service.getItemSubTotalWithMarkdown(this.shoppingCart, CAN_OF_SOUP);
+		final BigDecimal canOfSoupSubTotal = this.service.getItemCurrentSubTotal(this.shoppingCart, CAN_OF_SOUP);
 		assertEquals(new BigDecimal("5.07"), canOfSoupSubTotal); // (1.89 - .20) * 3
 		
-		final BigDecimal groundBeefSubTotal = this.service.getItemSubTotalWithMarkdown(this.shoppingCart, GROUND_BEEF);
+		final BigDecimal groundBeefSubTotal = this.service.getItemCurrentSubTotal(this.shoppingCart, GROUND_BEEF);
 		assertEquals(new BigDecimal("10.98"), groundBeefSubTotal); // (5.99 - .50) * 2
 		
-		final BigDecimal bananasSubTotal = this.service.getItemSubTotalWithMarkdown(this.shoppingCart, BANANAS);
+		final BigDecimal bananasSubTotal = this.service.getItemCurrentSubTotal(this.shoppingCart, BANANAS);
 		assertEquals(new BigDecimal("11.15"), bananasSubTotal); // (2.38 - .15) * 5
 	}
 	

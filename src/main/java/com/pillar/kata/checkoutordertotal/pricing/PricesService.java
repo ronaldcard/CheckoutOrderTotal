@@ -40,7 +40,7 @@ public class PricesService {
 			
 			final Price basePrice = this.prices.getBasePriceOfItem(item);
 			
-			final BigDecimal itemSubTotal = calculateItemSubTotalBasePrice(basePrice, purchaseAmount);
+			final BigDecimal itemSubTotal = calculateItemSubTotal(basePrice, purchaseAmount);
 			
 			basePriceSubTotal = basePriceSubTotal.add(itemSubTotal);
 		}
@@ -49,23 +49,22 @@ public class PricesService {
 	}
 	
 	/**
-	 * Calculates an {@link Item}'s sub total with markdown.
+	 * Calculates an {@link Item}'s current sub total with markdown.
 	 * 
 	 * @param shoppingCart the {@link ShoppingCart}
 	 * @param item the item
 	 * @return the dollar amount
 	 */
-	public BigDecimal getItemSubTotalWithMarkdown(final ShoppingCart shoppingCart, final Item item) {
+	public BigDecimal getItemCurrentSubTotal(final ShoppingCart shoppingCart, final Item item) {
 		
 		BigDecimal basePriceSubTotal = BigDecimal.ZERO;
 		
 		final PurchaseAmount purchaseAmount = shoppingCart.getItemCount(item);
 		
-		if (purchaseAmount != null && this.prices.hasMarkdownPrice(item)) {
+		if (purchaseAmount != null) {
 			
-			final Price basePrice = this.prices.getBasePriceOfItem(item);
-			final Price markdown = this.prices.getItemMarkdown(item);
-			final BigDecimal itemSubTotal = this.calculateItemSubTotalWithMarkdown(basePrice, markdown, purchaseAmount);
+			final Price currenPriceOfItem = this.prices.getCurrentPriceOfItem(item);
+			final BigDecimal itemSubTotal = this.calculateItemSubTotal(currenPriceOfItem, purchaseAmount);
 		
 			basePriceSubTotal = basePriceSubTotal.add(itemSubTotal);
 		}
@@ -124,7 +123,7 @@ public class PricesService {
 				subTotal = subTotal.add(weeklySpecialSubTotal);
 			} else {
 				
-				final BigDecimal itemSubTotal = this.calculateItemCurrentSubTotal(currenPriceOfItem, purchaseAmount);
+				final BigDecimal itemSubTotal = this.calculateItemSubTotal(currenPriceOfItem, purchaseAmount);
 				
 				subTotal = subTotal.add(itemSubTotal);
 			}
@@ -134,39 +133,16 @@ public class PricesService {
 	}
 	
 	/**
+	 * Calculates the items sub total.
 	 * 
-	 * @param basePrice
-	 * @param purchaseAmount
-	 * @return
+	 * @param price the {@link Price}
+	 * @param purchaseAmount the {@link PurchaseAmount}
+	 * @return the dollar amount
 	 */
-	private BigDecimal calculateItemSubTotalBasePrice(final Price basePrice, final PurchaseAmount purchaseAmount) {
+	private BigDecimal calculateItemSubTotal(final Price price, final PurchaseAmount purchaseAmount) {
 		
-		return basePrice.getAmount().multiply(purchaseAmount.getAmount());
+		return price.getAmount().multiply(purchaseAmount.getAmount());
 	}
-	
-	/**
-	 * 
-	 * @param basePrice
-	 * @param markdown
-	 * @param purchaseAmount
-	 * @return
-	 */
-	private BigDecimal calculateItemSubTotalWithMarkdown(final Price basePrice, final Price markdown, final PurchaseAmount purchaseAmount) {
-		
-		return (basePrice.getAmount().subtract(markdown.getAmount())).multiply(purchaseAmount.getAmount());
-	}
-	
-	/**
-	 * 
-	 * @param currentPrice
-	 * @param purchaseAmount
-	 * @return
-	 */
-	private BigDecimal calculateItemCurrentSubTotal(final Price currentPrice, final PurchaseAmount purchaseAmount) {
-		
-		return currentPrice.getAmount().multiply(purchaseAmount.getAmount());
-	}
-	
 	
 	/**
 	 * @return the prices
